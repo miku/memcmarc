@@ -2,7 +2,7 @@ TARGETS = memcmarc
 
 all: $(TARGETS)
 
-memcmarc: imports
+memcmarc:
 	go build -o memcmarc cmd/memcmarc/main.go
 
 imports:
@@ -29,3 +29,26 @@ rpm: $(TARGETS)
 
 cloc:
 	cloc --max-file-size 1 .
+
+# TODO: outsource vm setup to vagrant public registy
+USERDIR=/home/vagrant/src/github.com/miku
+PROJECTDIR=$(USERDIR)/memcmarc
+PORT = 2222
+SSHCMD = ssh -o StrictHostKeyChecking=no -i vagrant.key vagrant@127.0.0.1 -p $(PORT)
+SCPCMD = scp -o port=$(PORT) -o StrictHostKeyChecking=no -i vagrant.key
+
+vagrant.key:
+	curl -sL "https://raw.githubusercontent.com/mitchellh/vagrant/master/keys/vagrant" > vagrant.key
+	chmod 0600 vagrant.key
+
+setup: vagrant.key
+	vagrant up
+	$(SSHCMD) "sudo yum install -y http://ftp.riken.jp/Linux/fedora/epel/6/i386/epel-release-6-8.noarch.rpm"
+	$(SSHCMD) "sudo yum install -y golang git rpm-build"
+	$(SSHCMD) "mkdir -p cd $(USERDIR)"
+	$(SSHCMD) "cd $(USERDIR) && git clone https://github.com/miku/memcmarc.git"
+
+rpm-compatible: vagrant.key
+	$(SSHCMD) "cd $(PROJECTDIR) && GOPATH=/home/vagrant go get ./..."
+	$(SSHCMD) "cd $(PROJECTDIR) && git pull origin master && pwd && GOPATH=/home/vagrant make clean rpm"
+	$(SCPCMD) vagrant@127.0.0.1:$(PROJECTDIR)/*rpm .

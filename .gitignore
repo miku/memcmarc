@@ -27,3 +27,5 @@ _testmain.go
 memcmarc*.deb
 memcmarc*.rpm
 packaging/deb/memcmarc/usr
+
+vagrant.key
