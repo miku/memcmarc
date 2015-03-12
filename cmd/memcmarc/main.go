@@ -39,7 +39,7 @@ func worker(queue chan []work, opts options, wg *sync.WaitGroup) {
 	mc := memcache.New(opts.hostport)
 	for batch := range queue {
 		for _, work := range batch {
-			var ok bool
+			ok := false
 			var i uint
 
 			for i = 1; i <= opts.retry; i++ {
