@@ -82,12 +82,7 @@ func main() {
 	}
 
 	if flag.NArg() < 1 {
-		log.Fatal("input file required")
-	}
-
-	file, err := os.Open(flag.Arg(0))
-	if err != nil {
-		log.Fatal(err)
+		log.Fatal("input file or files required")
 	}
 
 	opts := options{
@@ -106,35 +101,49 @@ func main() {
 	}
 
 	var batch []work
-	var offset int64
-	var i int
-	ids := marctools.IDList(file.Name())
 
-	for {
-		length, err := marctools.RecordLength(file)
-		if err == io.EOF {
-			break
-		}
+	for _, filename := range flag.Args() {
+
+		var offset int64
+		var i int
+
+		file, err := os.Open(filename)
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		file.Seek(offset, 0)
-		buf := make([]byte, length)
-		_, err = file.Read(buf)
+		ids := marctools.IDList(file.Name())
 
-		batch = append(batch, work{id: ids[i], blob: buf})
+		for {
+			length, err := marctools.RecordLength(file)
+			if err == io.EOF {
+				break
+			}
+			if err != nil {
+				log.Fatal(err)
+			}
 
-		if i%*size == 0 {
-			queue <- batch
-			batch = batch[:0]
+			file.Seek(offset, 0)
+			buf := make([]byte, length)
+			_, err = file.Read(buf)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			batch = append(batch, work{id: ids[i], blob: buf})
+
+			if i%*size == 0 {
+				queue <- batch
+				batch = batch[:0]
+			}
+
+			offset = offset + length
+			i++
 		}
-
-		offset = offset + length
-		i++
 	}
 
 	queue <- batch
 	close(queue)
 	wg.Wait()
+
 }
