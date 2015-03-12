@@ -4,7 +4,7 @@ README
 Load MARC blobs into [memcached](http://memcached.org/) or
 [memcachedb](http://memcachedb.org/) quickly. Given an
 [MARC](http://www.loc.gov/marc/bibliographic/) file,
-use value of field 001 as key and the whole binary record as blob.
+use value of field 001 as key and the whole binary record as blob value.
 
 Installation
 ------------
