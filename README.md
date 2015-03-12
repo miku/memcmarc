@@ -25,9 +25,15 @@ Usage
 Example
 -------
 
-    $ memcached # run in bg or other terminal
+Start memcached (or memcachedb):
+
+    $ memcached
+
+Load records:
 
     $ memcmarc fixtures/journals.mrc
+
+Check:
 
     $ telnet localhost 11211
     Trying ::1...
