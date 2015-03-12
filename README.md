@@ -16,11 +16,15 @@ Or install via [debian or rpm packages](https://github.com/miku/memcmarc/release
 Usage
 -----
 
-    $ memcmarc
+    $ memcmarc FILE [FILE, ...]
     Usage of memcmarc:
       -addr="127.0.0.1:11211": hostport of memcache
+      -b=10000: batch size
+      -key="id": key to use
       -retry=10: retry set operation this many times
+      -v=false: prints current program version
       -verbose=false: be verbose
+      -w=4: number of workers
 
 Example
 -------
