@@ -134,6 +134,9 @@ func main() {
 
 			if i%*size == 0 {
 				queue <- batch
+				if *verbose {
+					log.Printf("sent %d", i)
+				}
 				batch = batch[:0]
 			}
 
