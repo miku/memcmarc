@@ -29,3 +29,4 @@ memcmarc*.rpm
 packaging/deb/memcmarc/usr
 
 vagrant.key
+.vagrant/
