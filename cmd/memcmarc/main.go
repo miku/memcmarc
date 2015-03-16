@@ -133,9 +133,11 @@ func main() {
 			batch = append(batch, work{id: ids[i], blob: buf})
 
 			if i%*size == 0 {
-				queue <- batch
+				b := make([]work, len(batch))
+				copy(b, batch)
+				queue <- b
 				if *verbose {
-					log.Printf("sent %d", i)
+					log.Printf("@%d", i)
 				}
 				batch = batch[:0]
 			}
@@ -143,10 +145,13 @@ func main() {
 			offset = offset + length
 			i++
 		}
+		b := make([]work, len(batch))
+		copy(b, batch)
+		queue <- b
+		if *verbose {
+			log.Printf("@%d", i)
+		}
 	}
-
-	queue <- batch
 	close(queue)
 	wg.Wait()
-
 }
