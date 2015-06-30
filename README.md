@@ -65,3 +65,8 @@ Check:
     END
     ^]
     telnet> Connection closed.
+
+See it action
+-------------
+
+[![asciicast](https://asciinema.org/a/ed64c7a69ts5s9ddfths0p1mr.png)](https://asciinema.org/a/ed64c7a69ts5s9ddfths0p1mr)
