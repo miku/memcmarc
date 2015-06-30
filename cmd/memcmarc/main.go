@@ -120,6 +120,9 @@ func main() {
 			if err != nil {
 				log.Fatal(err)
 			}
+			if len(ids[i]) > 250 {
+				log.Fatal("memcache maximum key length (250) exceeded")
+			}
 
 			file.Seek(offset, 0)
 			buf := make([]byte, length)
