@@ -141,10 +141,10 @@ func main() {
 				b := make([]work, len(batch))
 				copy(b, batch)
 				queue <- b
+				batch = batch[:0]
 				if *verbose {
 					log.Printf("@%d", i)
 				}
-				batch = batch[:0]
 			}
 
 			offset = offset + length
