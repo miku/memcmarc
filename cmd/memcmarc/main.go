@@ -98,6 +98,7 @@ func main() {
 	}
 
 	var batch []work
+	var counter int
 
 	for _, filename := range flag.Args() {
 
@@ -141,14 +142,17 @@ func main() {
 
 			offset = offset + length
 			i++
-		}
-		b := make([]work, len(batch))
-		copy(b, batch)
-		queue <- b
-		if *verbose {
-			log.Printf("@%d", i)
+			counter++
 		}
 	}
+
+	b := make([]work, len(batch))
+	copy(b, batch)
+	queue <- b
+	if *verbose {
+		log.Printf("@%d", counter)
+	}
+
 	close(queue)
 	wg.Wait()
 }
