@@ -46,7 +46,7 @@ func worker(queue chan []work, opts options, wg *sync.WaitGroup) {
 				if err != nil {
 					pause := 2 << i * backoff
 					if opts.verbose {
-						log.Printf("retry %d for %s in %s ...", i, work.id, pause)
+						log.Printf("retry %d for %s in %s (%s)", i, work.id, pause, err)
 					}
 					time.Sleep(pause)
 				} else {
@@ -110,10 +110,14 @@ func main() {
 			log.Fatal(err)
 		}
 
+		if *verbose {
+			log.Println("extracting record ids...")
+		}
 		ids := marctools.IDList(file.Name())
 
 		for {
 			length, err := marctools.RecordLength(file)
+
 			if err == io.EOF {
 				break
 			}
