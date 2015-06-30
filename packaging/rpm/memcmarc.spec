@@ -1,6 +1,6 @@
 Summary:    Load/Set MARC records into memcache.
 Name:       memcmarc
-Version:    1.2.0
+Version:    1.3.0
 Release:    0
 License:    MIT
 BuildArch:  x86_64
