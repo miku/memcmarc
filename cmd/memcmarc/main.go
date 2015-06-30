@@ -129,8 +129,10 @@ func main() {
 			}
 
 			file.Seek(offset, 0)
+
 			buf := make([]byte, length)
 			_, err = file.Read(buf)
+
 			if err != nil {
 				log.Fatal(err)
 			}
