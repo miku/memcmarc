@@ -29,7 +29,6 @@ type work struct {
 
 type options struct {
 	hostport string
-	key      string
 	retry    uint
 	verbose  bool
 }
@@ -65,7 +64,6 @@ func worker(queue chan []work, opts options, wg *sync.WaitGroup) {
 func main() {
 
 	hostport := flag.String("addr", "127.0.0.1:11211", "hostport of memcache")
-	key := flag.String("key", "id", "key to use")
 	retry := flag.Int("retry", 10, "retry set operation this many times")
 	numWorker := flag.Int("w", runtime.NumCPU(), "number of workers")
 	size := flag.Int("b", 10000, "batch size")
@@ -87,7 +85,6 @@ func main() {
 
 	opts := options{
 		hostport: *hostport,
-		key:      *key,
 		retry:    uint(*retry),
 		verbose:  *verbose,
 	}
